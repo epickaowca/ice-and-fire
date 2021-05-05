@@ -27,6 +27,11 @@ ${p=>p.theme.media.tablet}{
         margin-left: 25px;
     }
 }
+${p=>p.theme.media.desktop}{
+    & > input, & > select{
+        font-size: 1rem;
+    }
+}
 `
 
 const Filters = () => {

@@ -10,9 +10,9 @@ const Wrapper = styled.div`
 const Home:React.FC = ()=> {
   return (
     <Wrapper>
+      <Header />
       <Filters />
-      {/* <Header /> */}
-      {/* <CharacterList /> */}
+      <CharacterList />
     </Wrapper>
     )
 }

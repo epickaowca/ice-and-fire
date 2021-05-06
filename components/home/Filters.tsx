@@ -28,13 +28,17 @@ ${p=>p.theme.media.tablet}{
     }
 }
 ${p=>p.theme.media.desktop}{
+    max-width: 500px;
     & > input, & > select{
         font-size: 1rem;
+    }
+    & > input{
+        width: 350px;
     }
 }
 `
 
-const Filters = () => {
+const Filters:React.FC = () => {
     return (
         <Wrapper>
             <input placeholder='name' type='text' />

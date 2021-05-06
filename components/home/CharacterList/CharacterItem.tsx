@@ -10,12 +10,22 @@ const Wrapper = styled.article`
     border-radius: 15px;
     color: white;
     padding: 20px;
-    margin: auto;
+    padding-top: 40px;
+    margin: 25px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
     & > h2{
         margin: 17px 0px;
         font-weight: 400;
     }
     & > p{
+        &:nth-child(1){
+            position: absolute;
+            left: 20px;
+            top: 20px;
+        }
         &:nth-child(3){
             color: rgba(255,255,255,.7);
         }
@@ -27,10 +37,11 @@ const Wrapper = styled.article`
         }
     }
     ${p=>p.theme.media.tablet}{
+        margin: 25px;
         max-width: 400px;
         & > p{
             &:nth-child(3){
-                padding: 0px 20px;
+                width: 360px;
             }
             &:first-child{
                 text-align: left;
@@ -86,12 +97,17 @@ const StyledSection = styled.section`
     }
 `
 
-const CharacterItem:React.FC = () => {
+interface RFInterface {
+    props: string
+}
+
+
+const CharacterItem:React.FC<RFInterface> = ({props}) => {
     return (
         <Wrapper>
             <p>582</p>
             <h2>Name and aliases</h2>
-            <p>Jon Snow, Lord Snow, Ned Stark's Bastard, The Snow of Winterfell, The Crow-Come-Over, The 998th Lord Commander of the Night's Watch, The Bastard of Winterfell, The Black Bastard of the Wall, Lord Crow</p>
+            <p>{props}</p>
             <StyledSection>
                 <div>
                     <div>

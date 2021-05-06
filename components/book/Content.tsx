@@ -100,31 +100,34 @@ const StyledSection = styled.section`
             }
         }
     }
-` 
+`
 
-const Content:React.FC = () => {
+
+const Content = ({props}) => {
+    console.log(props)
+    const dateH = new Date(props.released)
     return (
         <Wrapper>
             <div>
-                <h1>A Game of Thrones</h1>
+                <h1>{props.name}</h1>
                 <StyledSection>
                     <div>
                         <p>ISBN:</p>
-                        <p>978-0553103540</p>
+                        <p>{props.isbn}</p>
                     </div>
                     <div>
                         <p>number of pages:</p>
-                        <p>694</p>
+                        <p>{props.numberOfPages}</p>
                     </div>
                     <div>
-                        <p>relesed:</p>
-                        <p>1996-08-01</p>
+                        <p>released:</p>
+                        <p>{dateH.toString().slice(4,15)}</p>
                     </div>
                 </StyledSection>
-                <p>Elio Garcia, Linda Antonsson, George R. R. Martin</p>
-                <p>Hardcover</p>
-                <p>Bantam Books</p>
-                <p>United States</p>
+                <p>{props.authors.map(elem=>`${elem}, `)}</p>
+                <p>{props.mediaType}</p>
+                <p>{props.publisher}</p>
+                <p>{props.country}</p>
             </div>
             <Image src='/asset/bookImg.svg' width={1036} height={569.97133} />
         </Wrapper>

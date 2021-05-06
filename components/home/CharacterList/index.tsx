@@ -1,7 +1,10 @@
 import CharacterItem from './CharacterItem'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../redux/duck'
 
 const Wrapper = styled.section`
+    color: white;
     margin: auto;
     margin-top: 50px;
     display: flex;
@@ -14,14 +17,11 @@ const Wrapper = styled.section`
 `
 
 const CharacterList:React.FC = () => {
+  const characterList = useSelector((state:AppState)=>state.app.characterList)
+  const loading = useSelector((state:AppState)=>state.app.loading)
     return (
         <Wrapper>
-            <CharacterItem props="Jon Snow, Lord Snow, Ned Stark's Bastard, The Snow of Winterfell, The Crow-Come-Over, The 998th Lord Commander of the Night's Watch, The Bastard of Winterfell, The Black Bastard of the Wall, Lord Crow" />
-            <CharacterItem props="Jon Snow, Lord Snow," />
-            <CharacterItem props="Jon Snow, Lord Snow, Ned Stark's Bastard, The Snow of Winterfell, The Crow-Come-Over,"/>
-            <CharacterItem props="Jon Snow,"/>
-            <CharacterItem props="Jon Snow, Lord Snow, Ned Stark's Bastard, The Snow of Winterfell, The Crow-Come-Over, The 998th Lord Commander of the Night's Watch, The Bastard of Winterfell"/>
-            <CharacterItem props='Jon'/>
+            {loading ? <h1>Loading</h1> : characterList.length ? characterList.map((elem, index)=><CharacterItem key={index} props={elem} />) : <h1>no result found</h1>}
         </Wrapper>
     )
 }

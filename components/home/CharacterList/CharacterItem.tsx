@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import GenderIco from '../../../public/asset/gender.svg'
 import Culture from '../../../public/asset/culture.svg'
@@ -97,44 +98,50 @@ const StyledSection = styled.section`
     }
 `
 
-interface RFInterface {
-    props: string
-}
 
-
-const CharacterItem:React.FC<RFInterface> = ({props}) => {
+const CharacterItem = ({props}) => {
+    let nameArrH:string[]
+    nameArrH = props.name ? [props.name, ...props.aliases] : [...props.aliases]
+    const bookIdArr = props.books.map(elem=>{
+        //return only id from url
+        let index = elem.indexOf('books/')+6
+        let id = elem.slice(index)
+        return id
+    })
+    const { gender, culture } = props
     return (
         <Wrapper>
-            <p>582</p>
+            <p>{props.url.slice(45)}</p>
             <h2>Name and aliases</h2>
-            <p>{props}</p>
+            <p>{nameArrH.map((elem, index)=>index === nameArrH.length-1 ? elem : `${elem}, `)}</p>
             <StyledSection>
                 <div>
                     <div>
                         <GenderIco />
                     </div>
-                    <p>Male</p>
+                    <p>{gender ? gender : 'unknow'}</p>
                 </div>
                 <div>
                     <div>
                         <Culture />
                     </div>
-                    <p>Northmen</p>
+                    <p>{culture ? culture : 'unknow'}</p>
                 </div>
                 <div>
                     <div>
                         <Book />
                     </div>
                     <p>
-                        <Link href="#">5, </Link>
-                        <Link href="#">6, </Link>
-                        <Link href="#">8 </Link>
+                        {bookIdArr.map((elem, index)=>{
+                            const childrenH = index === bookIdArr.length-1 ? elem : `${elem}, `
+                            return <Link key={index} href={`/book/${elem}`}>{childrenH}</Link>
+                        })}
                     </p>
                 </div>
             </StyledSection>
             <p>
                 the number of seasons of the series:
-                <span> 6</span>
+                <span> {props.tvSeries.length === 1 && props.tvSeries[0] === "" ? 0 : props.tvSeries.length}</span>
             </p>
         </Wrapper>
     )

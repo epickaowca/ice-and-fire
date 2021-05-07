@@ -29,11 +29,17 @@ const Pagination:React.FC = () => {
                 dispatch(setPage(currentPageH-1))
             }
         }else if(option === 'next'){
-            dispatch(setPage(currentPageH+1))
+            if(currentPageH !== +lastPossiblePage){
+                dispatch(setPage(currentPageH+1))
+            }
         }else if(option === 'last'){
-            dispatch(setPage(lastPossiblePage))
+            if(currentPageH !== lastPossiblePage){
+                dispatch(setPage(lastPossiblePage))
+            }
         }else if(option === 'first'){
-            dispatch(setPage(1))
+            if(currentPageH !== 1){
+                dispatch(setPage(1))
+            }
         }
     }
     return (

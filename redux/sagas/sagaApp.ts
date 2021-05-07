@@ -10,14 +10,16 @@ function* rootSaga(): Generator<StrictEffect>{
     yield takeEvery(types.LOAD_CHARACTERS, GrabCharacters)
     yield takeEvery(types.SET_PAGE, GrabCharacters)
     yield takeEvery(types.SET_PAGE_SIZE, GrabCharacters)
+    yield takeEvery(types.SET_FILTERS, GrabCharacters)
 }
 
 
 function* GrabCharacters(payload:ActionTypes){
     const alreadyFetchedPages =  yield select((state:AppState)=>state.app.characterList)
     const pageSize =  yield select((state:AppState)=>state.app.pageSize)
+    const filters =  yield select((state:AppState)=>state.app.filters)
     try{
-        const res = yield call(()=>fetchData(payload, pageSize, alreadyFetchedPages))
+        const res = yield call(()=>fetchData(payload, pageSize, alreadyFetchedPages, filters))
         yield put({ type: types.LOAD_CHARACTERS_SUCCES, payload: res})
     }catch(e){
         yield put({ type: types.LOAD_CHARACTERS_FAIL, payload: e.message})
@@ -25,15 +27,14 @@ function* GrabCharacters(payload:ActionTypes){
 }
 
 
-const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages)=>{
+const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, storeFilters)=>{
     let url = ''
-    let pageH
+    let pageH = 1
     let resetPages = false
     let alreadyThere = false
     let lastPageR = false
     if(payload.type === types.LOAD_CHARACTERS){
         url = `${preUrl}?pageSize=${pageSize}`
-        pageH = 1
         lastPageR = true
     }else if(payload.type === types.SET_PAGE){
         url = `${preUrl}?page=${payload.page}&pageSize=${pageSize}`
@@ -41,8 +42,12 @@ const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages)=>{
         const alreadyFetchedPagesH = Object.keys(alreadyFetchedPages)
         if(alreadyFetchedPagesH.includes(pageH.toString())) alreadyThere = true
     }else if(payload.type === types.SET_PAGE_SIZE){
-        url = `${preUrl}?page=1&pageSize=${payload.size}`
-        pageH = 1
+        url = `${preUrl}?page=1&pageSize=${payload.size}&name=${storeFilters.name}&gender=${storeFilters.gender}`
+        resetPages = true
+        lastPageR = true
+    }else if(payload.type == types.SET_FILTERS){
+        const {name, gender} = payload.filters
+        url = `${preUrl}?page=1&pageSize=${pageSize}&name=${name}&gender=${gender}`
         resetPages = true
         lastPageR = true
     }

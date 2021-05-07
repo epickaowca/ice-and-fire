@@ -1,4 +1,8 @@
+import { useState, ChangeEvent, useEffect } from 'react'
 import styled from 'styled-components'
+import { useSelector, useDispatch } from 'react-redux'
+import { AppState } from '../../redux/duck'
+import { setFilters } from '../../redux/duck/app'
 
 const Wrapper = styled.form`
 display: flex;
@@ -39,11 +43,30 @@ ${p=>p.theme.media.desktop}{
 `
 
 const Filters:React.FC = () => {
+    const [stateFilters, setStateFilters] = useState({name: '', gender: ''})
+    const dispatch = useDispatch()
+    const state = useSelector((state:AppState)=>state.app)
+
+    const inputHandler = (e:ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLSelectElement>)=>{
+        const {name, value} = e.target
+        setStateFilters(prev=>({...prev, [name]: value}))
+        if(name==='gender'){
+            submitHandler(e)
+        }
+    }
+
+    const submitHandler = (e)=>{
+        e.preventDefault()
+        const genderVal =  e.target.name === 'gender' ? e.target.value : stateFilters.gender 
+        const nameVal = stateFilters.name.trim() ? stateFilters.name : '' 
+        dispatch(setFilters({name: nameVal, gender: genderVal}))
+    }
+    console.log(state)
     return (
-        <Wrapper>
-            <input placeholder='name' type='text' />
-            <select>
-                <option value='all'>gender</option>
+        <Wrapper onSubmit={submitHandler}>
+            <input name='name' placeholder='name' type='text' value={stateFilters.name} onChange={inputHandler} />
+            <select name='gender' value={stateFilters.gender} onChange={inputHandler}>
+                <option value=''>gender</option>
                 <option value='male'>male</option>
                 <option value='female'>female</option>
             </select>

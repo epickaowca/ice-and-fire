@@ -28,29 +28,38 @@ function* GrabCharacters(payload:ActionTypes){
 
 
 const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, storeFilters)=>{
-    let url = ''
-    let pageH = 1
-    let resetPages = false
-    let alreadyThere = false
-    let lastPageR = false
+    const helperObject = {pageH: 1, resetPages: false, alreadyThere: false, lastPageR: false, pageSizeH: pageSize, nameH: '', genderH: ''}
+    let {pageH, resetPages, alreadyThere, lastPageR, pageSizeH, nameH, genderH} = helperObject
+
     if(payload.type === types.LOAD_CHARACTERS){
-        url = `${preUrl}?pageSize=${pageSize}`
         lastPageR = true
+
     }else if(payload.type === types.SET_PAGE){
-        url = `${preUrl}?page=${payload.page}&pageSize=${pageSize}`
+
         pageH = payload.page
         const alreadyFetchedPagesH = Object.keys(alreadyFetchedPages)
         if(alreadyFetchedPagesH.includes(pageH.toString())) alreadyThere = true
+
     }else if(payload.type === types.SET_PAGE_SIZE){
-        url = `${preUrl}?page=1&pageSize=${payload.size}&name=${storeFilters.name}&gender=${storeFilters.gender}`
+
         resetPages = true
         lastPageR = true
+        pageSizeH = payload.size
+        nameH = storeFilters.name
+        genderH = storeFilters.gender
+
     }else if(payload.type == types.SET_FILTERS){
+
         const {name, gender} = payload.filters
-        url = `${preUrl}?page=1&pageSize=${pageSize}&name=${name}&gender=${gender}`
         resetPages = true
         lastPageR = true
+        nameH = name
+        genderH = gender
     }
+
+
+    const url = `${preUrl}?page=${pageH}&pageSize=${pageSizeH}&name=${nameH}&gender=${genderH}`
+    console.log(url)
     if(alreadyThere){
         return {alreadyThere}
     }else{
@@ -77,6 +86,9 @@ const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, sto
 
 
 
-
-
 export default rootSaga
+
+
+
+
+

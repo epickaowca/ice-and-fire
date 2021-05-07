@@ -21,7 +21,7 @@ const initialState:appStateInterface={
     page: 1,
     pageSize: 10,
     lastPossiblePage: 1,
-    filters: {name: 'all', gender: 'all'}
+    filters: {name: '', gender: ''}
 }
 
 const reducer = (state = initialState, action:ActionTypes)=>{

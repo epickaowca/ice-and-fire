@@ -30,6 +30,11 @@ function* GrabCharacters(payload:ActionTypes){
 const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, storeFilters)=>{
     const helperObject = {pageH: 1, resetPages: false, alreadyThere: false, lastPageR: false, pageSizeH: pageSize, nameH: '', genderH: ''}
     let {pageH, resetPages, alreadyThere, lastPageR, pageSizeH, nameH, genderH} = helperObject
+    
+    const useFiltersH = ()=>{
+        nameH = storeFilters.name
+        genderH = storeFilters.gender
+    }
 
     //set the variables depending on the type of action
     if(payload.type === types.LOAD_CHARACTERS){
@@ -38,6 +43,7 @@ const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, sto
     }else if(payload.type === types.SET_PAGE){
 
         pageH = payload.page
+        useFiltersH()
         const alreadyFetchedPagesH = Object.keys(alreadyFetchedPages)
         if(alreadyFetchedPagesH.includes(pageH.toString())) alreadyThere = true
 
@@ -46,16 +52,13 @@ const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, sto
         resetPages = true
         lastPageR = true
         pageSizeH = payload.size
-        nameH = storeFilters.name
-        genderH = storeFilters.gender
+        useFiltersH()
 
     }else if(payload.type == types.SET_FILTERS){
 
-        const {name, gender} = payload.filters
         resetPages = true
         lastPageR = true
-        nameH = name
-        genderH = gender
+        useFiltersH()
     }
 
     //use variables to create url

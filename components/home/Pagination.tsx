@@ -21,26 +21,32 @@ const Wrapper = styled.div`
 
 const Pagination:React.FC = () => {
     const dispatch = useDispatch()
-    const currentPage = useSelector((state:AppState)=>state.app.page)
-
+    const currentPageH = useSelector((state:AppState)=>state.app.page)
+    const lastPossiblePage = useSelector((state:AppState)=>state.app.lastPossiblePage)
     const clickHandler = (option)=>{
         if(option === 'previous'){
-            if(currentPage !== 1) {
-                dispatch(setPage(currentPage-1))
+            if(currentPageH !== 1) {
+                dispatch(setPage(currentPageH-1))
             }
-        }else{
-            dispatch(setPage(currentPage+1))
+        }else if(option === 'next'){
+            dispatch(setPage(currentPageH+1))
+        }else if(option === 'last'){
+            dispatch(setPage(lastPossiblePage))
+        }else if(option === 'first'){
+            dispatch(setPage(1))
         }
     }
     return (
         <Wrapper>
+            <button onClick={()=>clickHandler('first')}>first</button>
             <button onClick={()=>clickHandler('previous')}>previous</button>
             <button onClick={()=>clickHandler('next')}>next</button>
+            <button onClick={()=>clickHandler('last')}>last</button>
             <div>
                 <p>number of results per page</p>
-                <select onChange={e=>dispatch(setPageSize(+e.target.value))}>
+                <select defaultValue={10} onChange={e=>dispatch(setPageSize(+e.target.value))}>
                     <option value={5}>5</option>
-                    <option selected value={10}>10</option>
+                    <option value={10}>10</option>
                     <option value={15}>15</option>
                     <option value={20}>20</option>
                     <option value={25}>25</option>

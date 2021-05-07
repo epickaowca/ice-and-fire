@@ -6,17 +6,19 @@ export const LOAD_CHARACTERS_FAIL = 'app/load_characters_fail'
 
 
 export interface appStateInterface{
-    readonly characterList: object[]
+    readonly characterList: {}
     readonly loading: boolean
     readonly page: number
-    readonly pageSize: 10,
+    readonly pageSize: number,
+    readonly lastPossiblePage: number,
 }
 
 const initialState:appStateInterface={
-    characterList: [],
+    characterList: {},
     loading: false,
     page: 1,
     pageSize: 10,
+    lastPossiblePage: 1,
 }
 
 const reducer = (state = initialState, action:ActionTypes)=>{
@@ -34,25 +36,26 @@ const reducer = (state = initialState, action:ActionTypes)=>{
                 page: action.page
             }
         }
-        case SET_PAGE_SIZE:{
+        case SET_PAGE_SIZE:
             return{
                 ...state,
                 loading: true,
-                pageSize: action.size
+                pageSize: action.size,
+                page: 1
             }
-        }
         case LOAD_CHARACTERS_SUCCES:{
+            const { resetPages, page, val, alreadyThere, lastPage } = action.payload
             return{
                 ...state,
                 loading: false,
-                characterList: action.payload
+                characterList: resetPages ? {[page]: val} : alreadyThere ? state.characterList : {...state.characterList, [page]: val},
+                lastPossiblePage: lastPage ? lastPage : state.lastPossiblePage
             }
         }
-        case LOAD_CHARACTERS_FAIL:{
+        case LOAD_CHARACTERS_FAIL:
             return{
                 ...state,
             }
-        }
         default: return state
     }
 }
@@ -60,7 +63,7 @@ const reducer = (state = initialState, action:ActionTypes)=>{
 
 
 export type LoadCharactersType = {type: typeof LOAD_CHARACTERS}
-export type LoadCharactersSuccesType = {type: typeof LOAD_CHARACTERS_SUCCES, payload: [{}]}
+export type LoadCharactersSuccesType = {type: typeof LOAD_CHARACTERS_SUCCES, payload: {val?:{}[], page?: number, resetPages?: boolean, alreadyThere?: boolean, lastPage?: number}}
 export type LoadCharactersFailType = {type: typeof LOAD_CHARACTERS_FAIL, payload: string}
 export type SetPageType = {type: typeof SET_PAGE, page: number}
 export type SetPageSizeType = {type: typeof SET_PAGE_SIZE, size: number}

@@ -102,13 +102,13 @@ const StyledSection = styled.section`
 const CharacterItem = ({props}) => {
     let nameArrH:string[]
     nameArrH = props.name ? [props.name, ...props.aliases] : [...props.aliases]
-    const bookIdArr = props.books.map(elem=>{
+    const { gender, culture, tvSeries, books } = props
+    const bookIdArr = books.map(elem=>{
         //return only id from url
         let index = elem.indexOf('books/')+6
         let id = elem.slice(index)
         return id
     })
-    const { gender, culture } = props
     return (
         <Wrapper>
             <p>{props.url.slice(45)}</p>
@@ -141,7 +141,7 @@ const CharacterItem = ({props}) => {
             </StyledSection>
             <p>
                 the number of seasons of the series:
-                <span> {props.tvSeries.length === 1 && props.tvSeries[0] === "" ? 0 : props.tvSeries.length}</span>
+                <span> {tvSeries.length === 1 && tvSeries[0] === "" ? 0 : tvSeries.length}</span>
             </p>
         </Wrapper>
     )

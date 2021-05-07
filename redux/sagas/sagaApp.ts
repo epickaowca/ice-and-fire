@@ -1,5 +1,5 @@
 import * as types from '../duck/app'
-import { call, put, takeEvery, takeLatest, StrictEffect, select} from 'redux-saga/effects'
+import { call, put, takeEvery, StrictEffect, select} from 'redux-saga/effects'
 import axios from 'axios'
 import { ActionTypes } from '../duck/app'
 import { AppState } from '../duck'
@@ -31,6 +31,7 @@ const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, sto
     const helperObject = {pageH: 1, resetPages: false, alreadyThere: false, lastPageR: false, pageSizeH: pageSize, nameH: '', genderH: ''}
     let {pageH, resetPages, alreadyThere, lastPageR, pageSizeH, nameH, genderH} = helperObject
 
+    //set the variables depending on the type of action
     if(payload.type === types.LOAD_CHARACTERS){
         lastPageR = true
 
@@ -57,10 +58,10 @@ const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, sto
         genderH = gender
     }
 
-
+    //use variables to create url
     const url = `${preUrl}?page=${pageH}&pageSize=${pageSizeH}&name=${nameH}&gender=${genderH}`
-    console.log(url)
     if(alreadyThere){
+        //prevent fetch if page already fetched
         return {alreadyThere}
     }else{
         return axios.get(url)
@@ -71,7 +72,7 @@ const fetchData =  async(payload:ActionTypes, pageSize, alreadyFetchedPages, sto
                 let arrHLast = arrH[arrH.length-1] 
                 let index1 = arrHLast.indexOf('page=')+5
                 let index2 = arrHLast.indexOf('&pageSize')
-                lastPage = arrHLast.slice(index1, index2)
+                lastPage = +arrHLast.slice(index1, index2)
             }
             const resData = {val:res.data, page:pageH, resetPages, lastPage}
             return resData

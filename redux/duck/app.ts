@@ -13,6 +13,7 @@ export interface appStateInterface{
     readonly pageSize: number,
     readonly lastPossiblePage: number,
     readonly filters: {name: string, gender: string},
+    readonly error: string
 }
 
 const initialState:appStateInterface={
@@ -21,7 +22,8 @@ const initialState:appStateInterface={
     page: 1,
     pageSize: 10,
     lastPossiblePage: 1,
-    filters: {name: '', gender: ''}
+    filters: {name: '', gender: ''},
+    error: ''
 }
 
 const reducer = (state = initialState, action:ActionTypes)=>{
@@ -65,6 +67,7 @@ const reducer = (state = initialState, action:ActionTypes)=>{
         case LOAD_CHARACTERS_FAIL:
             return{
                 ...state,
+                error: action.payload
             }
         default: return state
     }

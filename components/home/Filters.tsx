@@ -1,7 +1,6 @@
-import { useState, ChangeEvent, useEffect } from 'react'
+import { useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
-import { AppState } from '../../redux/duck'
+import { useDispatch } from 'react-redux'
 import { setFilters } from '../../redux/duck/app'
 
 const Wrapper = styled.form`
@@ -45,11 +44,11 @@ ${p=>p.theme.media.desktop}{
 const Filters:React.FC = () => {
     const [stateFilters, setStateFilters] = useState({name: '', gender: ''})
     const dispatch = useDispatch()
-    const state = useSelector((state:AppState)=>state.app)
 
-    const inputHandler = (e:ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLSelectElement>)=>{
+    const inputHandler = (e:ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>)=>{
         const {name, value} = e.target
         setStateFilters(prev=>({...prev, [name]: value}))
+
         if(name==='gender'){
             submitHandler(e)
         }
@@ -57,11 +56,12 @@ const Filters:React.FC = () => {
 
     const submitHandler = (e)=>{
         e.preventDefault()
-        const genderVal =  e.target.name === 'gender' ? e.target.value : stateFilters.gender 
+        const { name, value } = e.target
+        const genderVal =  name === 'gender' ? value : stateFilters.gender 
         const nameVal = stateFilters.name.trim() ? stateFilters.name : '' 
+        
         dispatch(setFilters({name: nameVal, gender: genderVal}))
     }
-    console.log(state)
     return (
         <Wrapper onSubmit={submitHandler}>
             <input name='name' placeholder='name' type='text' value={stateFilters.name} onChange={inputHandler} />

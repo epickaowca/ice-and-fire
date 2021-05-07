@@ -23,22 +23,18 @@ const CharacterList:React.FC = () => {
     const characterList = useSelector((state:AppState)=>state.app.characterList)
     const loading = useSelector((state:AppState)=>state.app.loading)
     const page = useSelector((state:AppState)=>state.app.page)
+    
     if(loading){
         return <Wrapper><h1>Loading</h1></Wrapper>
     }
-    if(characterList[page]){
-        return (
-            <Wrapper>
-                {characterList[page].length ? characterList[page].map((elem, index)=><CharacterItem key={index} props={elem} />) : <h1>no result found</h1>}
-            </Wrapper>
-        )
-    }else{
-        return (
-            <Wrapper>
+    return (
+        <Wrapper>
+            {characterList[page] ? 
+                characterList[page].length ? characterList[page].map((elem, index)=><CharacterItem key={index} props={elem} />) : <h1>no result found</h1>:
                 <h1>Page not found</h1>
-            </Wrapper>
-        )
-    }
+            }
+        </Wrapper>
+    )
 }
 
 export default CharacterList

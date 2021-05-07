@@ -104,30 +104,30 @@ const StyledSection = styled.section`
 
 
 const Content = ({props}) => {
-    console.log(props)
     const dateH = new Date(props.released)
+    const { authors, mediaType, publisher, country, name, isbn, numberOfPages } = props
     return (
         <Wrapper>
             <div>
-                <h1>{props.name}</h1>
+                <h1>{name}</h1>
                 <StyledSection>
                     <div>
                         <p>ISBN:</p>
-                        <p>{props.isbn}</p>
+                        <p>{isbn}</p>
                     </div>
                     <div>
                         <p>number of pages:</p>
-                        <p>{props.numberOfPages}</p>
+                        <p>{numberOfPages}</p>
                     </div>
                     <div>
                         <p>released:</p>
                         <p>{dateH.toString().slice(4,15)}</p>
                     </div>
                 </StyledSection>
-                <p>{props.authors.map(elem=>`${elem}, `)}</p>
-                <p>{props.mediaType}</p>
-                <p>{props.publisher}</p>
-                <p>{props.country}</p>
+                <p>{authors.map(elem=>`${elem}, `)}</p>
+                <p>{mediaType}</p>
+                <p>{publisher}</p>
+                <p>{country}</p>
             </div>
             <Image src='/asset/bookImg.svg' width={1036} height={569.97133} />
         </Wrapper>

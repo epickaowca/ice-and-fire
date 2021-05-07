@@ -64,24 +64,18 @@ const Pagination:React.FC = () => {
     const loading = useSelector((state:AppState)=>state.app.loading)
     const pageSize = useSelector((state:AppState)=>state.app.pageSize)
     const clickHandler = (option)=>{
-        if(option === 'previous'){
-            if(currentPageH !== 1) {
-                dispatch(setPage(currentPageH-1))
-            }
-        }else if(option === 'next'){
-            if(currentPageH !== +lastPossiblePage){
-                dispatch(setPage(currentPageH+1))
-            }
-        }else if(option === 'last'){
-            if(currentPageH !== lastPossiblePage){
-                dispatch(setPage(lastPossiblePage))
-            }
-        }else if(option === 'first'){
-            if(currentPageH !== 1){
-                dispatch(setPage(1))
-            }
+        //prevent dispatch if pointless
+        if( currentPageH === 1 && (option === 'previous' || option === 'first') ){
+            return
+        }else if( currentPageH === lastPossiblePage && (option === 'next' || option === 'last') ){
+            return
         }
+        
+        const newPageH = option === 'previous' ? currentPageH-1 : option === 'next' ? currentPageH+1 : option === 'last' ? lastPossiblePage : 1
+
+        dispatch(setPage(newPageH))
     }
+    
     if(loading){
         return null
     }else{

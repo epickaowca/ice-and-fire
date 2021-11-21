@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "cypress/integration/home/home.spec.js"  ],
   "exclude": [
     "node_modules"
   ]

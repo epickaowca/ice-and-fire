@@ -8,54 +8,17 @@ export const name_and_aliases = (name, aliases) => {
   return res;
 };
 
-const linkHeader =
-  '<https://anapioficeandfire.com/api/characters?page=3&pageSize=10>; rel="next", <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel="prev", <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel="first", <https://anapioficeandfire.com/api/characters?page=214&pageSize=10>; rel="last"';
-
-const charactersFakeBody = [
-  {
-    url: "https://anapioficeandfire.com/api/characters/1",
-    name: "Fake name",
-    gender: "Female",
-    culture: "Fake Culture",
-    aliases: ["Fake Alias, Another Fake Alias"],
-    books: ["https://anapioficeandfire.com/api/books/5"],
-    tvSeries: ["Season 3", "Season 4", "Season 6"],
-  },
-  {
-    url: "https://anapioficeandfire.com/api/characters/2",
-    name: "Walder",
-    gender: "Male",
-    culture: "Braavosi",
-    aliases: ["Hodor"],
-    books: [
-      "https://anapioficeandfire.com/api/books/1",
-      "https://anapioficeandfire.com/api/books/2",
-      "https://anapioficeandfire.com/api/books/3",
-      "https://anapioficeandfire.com/api/books/5",
-      "https://anapioficeandfire.com/api/books/8",
-    ],
-    tvSeries: ["Season 1", "Season 2", "Season 3", "Season 4", "Season 6"],
-  },
-  {
-    url: "https://anapioficeandfire.com/api/characters/2",
-    name: "Wald",
-    aliases: ["Hodorer"],
-    books: ["https://anapioficeandfire.com/api/books/1"],
-    tvSeries: [],
-  },
-];
-
-const nameV = "Wald";
-const genderV = "male";
-
-const charactersFakeBodyNameFilter = [
-  charactersFakeBody[1],
-  charactersFakeBody[2],
-];
-const charactersFakeBodyNameAndGenderFilter = [charactersFakeBody[1]];
-const page2CharactersContent = [charactersFakeBody[0]];
+const nameV = "Jul";
+const genderV = "female";
 
 describe("home tests", () => {
+  let fixtureData;
+  before(() => {
+    cy.fixture("example.json").then((data) => {
+      fixtureData = data;
+    });
+  });
+
   beforeEach(() => {
     cy.intercept(
       "GET",
@@ -63,9 +26,9 @@ describe("home tests", () => {
       {
         statusCode: 200,
         headers: {
-          link: linkHeader,
+          link: fixtureData.linkHeader,
         },
-        body: charactersFakeBody,
+        body: fixtureData.baseChar,
       }
     ).as("getcharacters");
     cy.visit("/");
@@ -75,11 +38,11 @@ describe("home tests", () => {
   it("correct character card display", () => {
     //for loop evry character
     cy.get("[data-cy=character_item]")
-      .should("have.length", 3)
+      .should("have.length", fixtureData.baseChar.length)
       .each(($item, index) => {
         //destruct fake character content
         const { name, aliases, gender, culture, books, tvSeries } =
-          charactersFakeBody[index];
+          fixtureData.baseChar[index];
 
         //convert special content
         const names_aliases = name_and_aliases(name, aliases);
@@ -121,10 +84,8 @@ describe("home tests", () => {
       `https://anapioficeandfire.com/api/characters?page=1&pageSize=10&name=${nameV}&gender=`,
       {
         statusCode: 200,
-        headers: {
-          link: linkHeader,
-        },
-        body: charactersFakeBodyNameFilter,
+        headers: { link: fixtureData.linkHeader },
+        body: fixtureData.jul_name,
       }
     ).as("filteredNames");
 
@@ -136,7 +97,7 @@ describe("home tests", () => {
 
     //check if all characters have filtered name
     cy.get("[data-cy=character_item]")
-      .should("have.length", 2)
+      .should("have.length", fixtureData.jul_name.length)
       .find("[data-cy=character_item_names]")
       .should("include.text", nameV);
 
@@ -146,10 +107,8 @@ describe("home tests", () => {
       `https://anapioficeandfire.com/api/characters?page=1&pageSize=10&name=${nameV}&gender=${genderV}`,
       {
         statusCode: 200,
-        headers: {
-          link: linkHeader,
-        },
-        body: charactersFakeBodyNameAndGenderFilter,
+        headers: { link: fixtureData.linkHeader },
+        body: fixtureData.female_jul_name,
       }
     ).as("filteredNamesAndGender");
 
@@ -161,8 +120,8 @@ describe("home tests", () => {
 
     //check if character have correct gender
     cy.get("[data-cy=character_item]")
-      .should("have.length", 1)
+      .should("have.length", fixtureData.female_jul_name.length)
       .find("[data-cy=character_item_gender]")
-      .should("have.text", "Male");
+      .should("have.text", "Female");
   });
 });

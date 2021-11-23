@@ -1,5 +1,114 @@
 {
-  "name": "Using fixtures to represent data",
-  "email": "hello@cypress.io",
-  "body": "Fixtures are a great way to mock data for responses to routes"
+  "linkHeader": "<https://anapioficeandfire.com/api/characters?page=3&pageSize=10>; rel='next', <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel='prev', <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel='first', <https://anapioficeandfire.com/api/characters?page=214&pageSize=10>; rel='last'",
+  "baseChar": [
+    {
+      "url": "https://anapioficeandfire.com/api/characters/1",
+      "name": "Lowri",
+      "gender": "Female",
+      "culture": "Fakkinasu",
+      "aliases": ["Michelle, Shelley"],
+      "books": ["https://anapioficeandfire.com/api/books/5"],
+      "tvSeries": ["Season 3", "Season 4", "Season 6"]
+    },
+    {
+      "url": "https://anapioficeandfire.com/api/characters/2",
+      "name": "Julie",
+      "gender": "Female",
+      "culture": "Vossumuyu",
+      "aliases": ["India, Theresa, Kimberly"],
+      "books": [
+        "https://anapioficeandfire.com/api/books/1",
+        "https://anapioficeandfire.com/api/books/2",
+        "https://anapioficeandfire.com/api/books/3",
+        "https://anapioficeandfire.com/api/books/5",
+        "https://anapioficeandfire.com/api/books/8"
+      ],
+      "tvSeries": ["Season 1","Season 2","Season 3","Season 4", "Season 5", "Season 6"]
+    },
+    {
+      "url": "https://anapioficeandfire.com/api/characters/3",
+      "name": "Robson",
+      "gender": "Male",
+      "culture": "Fakkinasu",
+      "aliases": ["Fritz"],
+      "books": ["https://anapioficeandfire.com/api/books/5"],
+      "tvSeries": ["Season 3", "Season 4", "Season 6"]
+    },
+    {
+      "url": "https://anapioficeandfire.com/api/characters/4",
+      "name": "Julius",
+      "gender": "Male",
+      "culture": "Fekkinuxo",
+      "aliases": ["Hodor"],
+      "books": [
+        "https://anapioficeandfire.com/api/books/5",
+        "https://anapioficeandfire.com/api/books/8"
+      ],
+      "tvSeries": ["Season 1", "Season 2", "Season 3", "Season 4", "Season 6"]
+    },
+    {
+      "url": "https://anapioficeandfire.com/api/characters/5",
+      "name": "Julen",
+      "gender": "",
+      "culture": "",
+      "aliases": ["Hodorer"],
+      "books": ["https://anapioficeandfire.com/api/books/1"],
+      "tvSeries": []
+    }
+  ],
+  "jul_name": [
+    {
+      "url": "https://anapioficeandfire.com/api/characters/2",
+      "name": "Julie",
+      "gender": "Female",
+      "culture": "Vossumuyu",
+      "aliases": ["India, Theresa, Kimberly"],
+      "books": [
+        "https://anapioficeandfire.com/api/books/1",
+        "https://anapioficeandfire.com/api/books/2",
+        "https://anapioficeandfire.com/api/books/3",
+        "https://anapioficeandfire.com/api/books/5",
+        "https://anapioficeandfire.com/api/books/8"
+      ],
+      "tvSeries": ["Season 1","Season 2","Season 3","Season 4", "Season 5", "Season 6"]
+    },
+    {
+      "url": "https://anapioficeandfire.com/api/characters/4",
+      "name": "Julius",
+      "gender": "Male",
+      "culture": "Fekkinuxo",
+      "aliases": ["Hodor"],
+      "books": [
+        "https://anapioficeandfire.com/api/books/5",
+        "https://anapioficeandfire.com/api/books/8"
+      ],
+      "tvSeries": ["Season 1", "Season 2", "Season 3", "Season 4", "Season 6"]
+    },
+    {
+      "url": "https://anapioficeandfire.com/api/characters/5",
+      "name": "Julen",
+      "gender": "",
+      "culture": "",
+      "aliases": ["Hodorer"],
+      "books": ["https://anapioficeandfire.com/api/books/1"],
+      "tvSeries": []
+    }
+  ],
+  "female_jul_name": [
+    {
+      "url": "https://anapioficeandfire.com/api/characters/2",
+      "name": "Julie",
+      "gender": "Female",
+      "culture": "Vossumuyu",
+      "aliases": ["India, Theresa, Kimberly"],
+      "books": [
+        "https://anapioficeandfire.com/api/books/1",
+        "https://anapioficeandfire.com/api/books/2",
+        "https://anapioficeandfire.com/api/books/3",
+        "https://anapioficeandfire.com/api/books/5",
+        "https://anapioficeandfire.com/api/books/8"
+      ],
+      "tvSeries": ["Season 1","Season 2","Season 3","Season 4", "Season 5", "Season 6"]
+    }
+  ]
 }

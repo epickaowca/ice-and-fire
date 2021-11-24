@@ -1,5 +1,4 @@
 {
-  "linkHeader": "<https://anapioficeandfire.com/api/characters?page=3&pageSize=10>; rel='next', <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel='prev', <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel='first', <https://anapioficeandfire.com/api/characters?page=214&pageSize=10>; rel='last'",
   "baseChar": [
     {
       "url": "https://anapioficeandfire.com/api/characters/1",

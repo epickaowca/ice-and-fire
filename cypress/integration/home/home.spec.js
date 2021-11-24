@@ -18,19 +18,15 @@ describe("home tests", () => {
       fixtureData = data;
     });
   });
-
   beforeEach(() => {
-    cy.intercept(
-      "GET",
-      "https://anapioficeandfire.com/api/characters?page=1&pageSize=10&name=&gender=",
-      {
-        statusCode: 200,
-        headers: {
-          link: fixtureData.linkHeader,
-        },
-        body: fixtureData.baseChar,
-      }
-    ).as("getcharacters");
+    cy.stubApi(fixtureData.baseChar, {
+      page: 1,
+      pageSize: 10,
+      name: "",
+      gender: "",
+      lastPage: "100",
+    }).as("getcharacters");
+
     cy.visit("/");
     cy.wait("@getcharacters");
   });
@@ -79,15 +75,13 @@ describe("home tests", () => {
 
   it("filters working", () => {
     //intercept a filtered by name api request
-    cy.intercept(
-      "GET",
-      `https://anapioficeandfire.com/api/characters?page=1&pageSize=10&name=${nameV}&gender=`,
-      {
-        statusCode: 200,
-        headers: { link: fixtureData.linkHeader },
-        body: fixtureData.jul_name,
-      }
-    ).as("filteredNames");
+    cy.stubApi(fixtureData.jul_name, {
+      page: 1,
+      pageSize: 10,
+      name: nameV,
+      gender: "",
+      lastPage: "100",
+    }).as("filteredNames");
 
     //type filtered name and submit
     cy.get("[data-cy=name_filter]").type(`${nameV}{enter}`);
@@ -102,15 +96,13 @@ describe("home tests", () => {
       .should("include.text", nameV);
 
     //intercept a filtered by name and gender api request
-    cy.intercept(
-      "GET",
-      `https://anapioficeandfire.com/api/characters?page=1&pageSize=10&name=${nameV}&gender=${genderV}`,
-      {
-        statusCode: 200,
-        headers: { link: fixtureData.linkHeader },
-        body: fixtureData.female_jul_name,
-      }
-    ).as("filteredNamesAndGender");
+    cy.stubApi(fixtureData.female_jul_name, {
+      page: 1,
+      pageSize: 10,
+      name: nameV,
+      gender: genderV,
+      lastPage: "100",
+    }).as("filteredNamesAndGender");
 
     //filter by gender request
     cy.get("[data-cy=gender_filter]").select(genderV);

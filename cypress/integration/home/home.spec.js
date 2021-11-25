@@ -8,6 +8,8 @@ export const name_and_aliases = (name, aliases) => {
   return res;
 };
 
+const linkk = `<https://anapioficeandfire.com/api/characters?page=3&pageSize=10>; rel='next', <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel='prev', <https://anapioficeandfire.com/api/characters?page=1&pageSize=10>; rel='first', <https://anapioficeandfire.com/api/characters?page=20&pageSize=10>; rel='last'`;
+
 const nameV = "Jul";
 const genderV = "female";
 
@@ -19,13 +21,32 @@ describe("home tests", () => {
     });
   });
   beforeEach(() => {
-    cy.stubApi(fixtureData.baseChar, {
-      page: 1,
-      pageSize: 10,
-      name: "",
-      gender: "",
-      lastPage: "100",
-    }).as("getcharacters");
+    cy.intercept(
+      "GET",
+      "https://anapioficeandfire.com/api/characters?*",
+      (req) => {
+        const url = new URL(req.url);
+        const gender = url.searchParams.get("gender");
+        const name = url.searchParams.get("name");
+
+        if (name === nameV && gender === genderV) {
+          req.reply({
+            body: fixtureData.female_jul_name,
+            headers: { link: linkk },
+          });
+        } else if (name === nameV) {
+          req.reply({
+            body: fixtureData.jul_name,
+            headers: { link: linkk },
+          });
+        } else {
+          req.reply({
+            body: fixtureData.baseChar,
+            headers: { link: linkk },
+          });
+        }
+      }
+    ).as("getcharacters");
 
     cy.visit("/");
     cy.wait("@getcharacters");
@@ -74,20 +95,11 @@ describe("home tests", () => {
   });
 
   it("filters working", () => {
-    //intercept a filtered by name api request
-    cy.stubApi(fixtureData.jul_name, {
-      page: 1,
-      pageSize: 10,
-      name: nameV,
-      gender: "",
-      lastPage: "100",
-    }).as("filteredNames");
-
     //type filtered name and submit
     cy.get("[data-cy=name_filter]").type(`${nameV}{enter}`);
 
     //wait for request
-    cy.wait("@filteredNames");
+    cy.wait("@getcharacters");
 
     //check if all characters have filtered name
     cy.get("[data-cy=character_item]")
@@ -95,20 +107,11 @@ describe("home tests", () => {
       .find("[data-cy=character_item_names]")
       .should("include.text", nameV);
 
-    //intercept a filtered by name and gender api request
-    cy.stubApi(fixtureData.female_jul_name, {
-      page: 1,
-      pageSize: 10,
-      name: nameV,
-      gender: genderV,
-      lastPage: "100",
-    }).as("filteredNamesAndGender");
-
     //filter by gender request
     cy.get("[data-cy=gender_filter]").select(genderV);
 
     //wait for request
-    cy.wait("@filteredNamesAndGender");
+    cy.wait("@getcharacters");
 
     //check if character have correct gender
     cy.get("[data-cy=character_item]")

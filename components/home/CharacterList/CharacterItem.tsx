@@ -110,7 +110,7 @@ const CharacterItem = ({ props }) => {
   });
   return (
     <Wrapper data-cy="character_item">
-      <p>{props.url.slice(45)}</p>
+      <p data-cy="character_item_index">{props.url.slice(45)}</p>
       <h2>Name and aliases</h2>
       <p data-cy="character_item_names">
         {nameArrH.map((elem, index) =>

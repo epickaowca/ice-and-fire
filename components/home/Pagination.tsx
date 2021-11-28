@@ -12,6 +12,13 @@ const Wrapper = styled.div`
     flex-direction: column;
     text-align: center;
     & > button {
+      &.disabled {
+        opacity: 0.3;
+        cursor: default;
+        &:hover {
+          opacity: 0.3;
+        }
+      }
       color: white;
       padding: 15px;
       margin: 15px;
@@ -94,14 +101,39 @@ const Pagination: React.FC = () => {
     return (
       <Wrapper>
         <div>
-          <button onClick={() => clickHandler("first")}>first</button>
-          <button onClick={() => clickHandler("previous")}>previous</button>
-          <button onClick={() => clickHandler("next")}>next</button>
-          <button onClick={() => clickHandler("last")}>last</button>
+          <button
+            className={currentPageH === 1 && "disabled"}
+            data-cy="page_first"
+            onClick={() => clickHandler("first")}
+          >
+            first
+          </button>
+          <button
+            className={currentPageH === 1 && "disabled"}
+            data-cy="page_previous"
+            onClick={() => clickHandler("previous")}
+          >
+            previous
+          </button>
+          <button
+            className={currentPageH === lastPossiblePage && "disabled"}
+            data-cy="page_next"
+            onClick={() => clickHandler("next")}
+          >
+            next
+          </button>
+          <button
+            className={currentPageH === lastPossiblePage && "disabled"}
+            data-cy="page_last"
+            onClick={() => clickHandler("last")}
+          >
+            last
+          </button>
         </div>
         <div>
           <p>number of results per page:</p>
           <select
+            data-cy="page_size"
             value={pageSize}
             onChange={(e) => dispatch(setPageSize(+e.target.value))}
           >
